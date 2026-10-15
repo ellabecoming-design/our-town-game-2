@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#41b9f1">
+  <title>Our Town Game</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <div class="landscape" aria-hidden="true">
+      <div class="sky-sun"></div><div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+      <div class="town-building b1"></div><div class="town-building b2"></div><div class="town-building b3"></div><div class="town-building b4"></div>
+      <div class="town-ground"></div><div class="tree t1"></div><div class="tree t2"></div><div class="town-bush l"></div><div class="town-bush r"></div>
+    </div>
+    <header class="toolbar">
+      <div class="controls">
+        <button id="home" class="round" type="button" aria-label="Home">⌂</button>
+        <button id="sound" class="round" type="button" aria-label="Toggle sound">♫</button>
+      </div>
+      <div id="counter" class="counter" aria-live="polite"></div>
+    </header>
+    <main id="screen" aria-live="polite"></main>
+    <div id="dragGhost" class="ghost" hidden></div>
+  </div>
+</body>
+</html>
