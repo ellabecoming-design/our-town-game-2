@@ -24,3 +24,14 @@
 @media(orientation:portrait){#screen{padding:85px 10px 20px}.game{grid-template-rows:auto minmax(0,1.35fr) minmax(0,1fr)}.dropzone{width:min(51vw,265px);max-width:min(51vw,265px)}.choice{width:30vw;outline-width:2px;border-width:3px;padding:3px}.choice span{font-size:clamp(11px,2.1vw,15px)}.levels{gap:8px}.level{padding:5px}.town-building{opacity:.5}.tree{opacity:.6}.home-panel{padding:15px 11px}.matched img{width:32vw}.matched .tick{font-size:34px}}
 @media(max-width:600px){.toolbar{left:8px;right:8px;top:7px}.round{width:45px;height:45px;font-size:23px;border-width:3px}.counter{font-size:15px;padding:7px 12px;border-width:3px}.level-photos img{width:44%}.subtitle{font-size:12px}.result h1{font-size:34px}.spoken-answer{font-size:15px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Bilingual headings only; card labels and audio remain English. */
+.title-tl{display:block;color:#234ea7;font-size:clamp(15px,2vw,23px);letter-spacing:0;line-height:1.25;margin:5px 0 2px;-webkit-text-stroke:0;text-shadow:0 2px 0 #fff}
+.question-en,.question-tl{display:block}
+.question-tl{font-size:.67em;line-height:1.2;color:#fffde2;margin-top:3px;text-shadow:0 2px 2px #1563a7}
+/* Incorrect dragged choice AND destination frame glow red, never green. */
+.choice.wrong{animation:wrongGlow .65s ease-out,shake .3s ease-out!important;position:relative;z-index:2}
+.dropzone.incorrect{animation:dropWrongGlow .78s ease-out!important;border-color:#ff4040!important}
+@keyframes wrongGlow{0%,50%{outline-color:#ff2525;box-shadow:0 0 0 5px #ff3949,0 0 24px 14px #ff2929b8,0 7px 0 #a31623}100%{box-shadow:0 0 0 0 #ff292900,0 0 0 0 #ff292900}}
+@keyframes dropWrongGlow{0%,60%{box-shadow:0 0 0 7px #ff3636,0 0 32px 18px #ff3333a8,0 6px 0 #b11c1c}100%{box-shadow:0 0 0 0 #ff363600,0 0 0 0 #ff333300}}
+@media(max-height:660px) and (orientation:landscape){.title-tl{font-size:14px;margin:1px}.question-tl{font-size:.64em;margin-top:0}}

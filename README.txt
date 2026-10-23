@@ -11,3 +11,10 @@ Doctor and nurse silhouettes are distinct exact-match questions.
 
 Updated UI: bright town background, colorful level cards, larger card borders, polished success screens.
 This is a working HTML/CSS/JavaScript game, not a flat image.
+
+
+2026-10-23 update:
+- English/Tagalog bilingual home title and question prompts; English speech unchanged.
+- Added assets/places/place_child_development_center2.webp, shown once in teacher/CDC pair; original CDC retained.
+- Replaced assets/places/place_hospital_nurse.webp with new nurse image.
+- Red glow flashes on both incorrect choice and target zone. Correctness and dragging rules unchanged.

@@ -29,7 +29,18 @@ const SCENES = [
   ['05_hungry','restaurant','I am hungry!'],
   ['06_basketball','basketball_court','I want to play basketball!']
 ];
-const file = (type,id) => `assets/${type}/${type==='jobs'?'job_':type==='places'?'place_':'scene_'}${id}.webp`;
+let cdcVariant = false;
+const file = (type,id) => `assets/${type}/${type==='jobs'?'job_':type==='places'?'place_':'scene_'}${id==='child_development_center' && type==='places' && cdcVariant?'child_development_center2':id}.webp`;
+const TAGALOG = {
+  'Who works here?':'Sino ang nagtatrabaho rito?',
+  'Where does this person work?':'Saan nagtatrabaho ang taong ito?',
+  'I feel sick!':'Masama ang pakiramdam ko!',
+  'There is a fire!':'May sunog!',
+  'I am lost!':'Naliligaw ako!',
+  'I need a haircut!':'Kailangan kong magpagupit!',
+  'I am hungry!':'Gutom ako!',
+  'I want to play basketball!':'Gusto kong maglaro ng basketball!'
+};
 const el = id => document.getElementById(id);
 const screen = el('screen'), counter = el('counter'), ghost = el('dragGhost');
 let level=0, index=0, questions=[], question=null, solved=false;
@@ -73,9 +84,9 @@ function playSound(correct){
   }catch(e){/* Some browsers do not allow sound. The game still works. */}
 }
 function showHome(){
-  level=0;index=0;solved=false;gesture=null;ghost.hidden=true;counter.textContent='';stopSpeech();
+  level=0;index=0;solved=false;gesture=null;ghost.hidden=true;counter.textContent='';stopSpeech();cdcVariant=false;
   screen.innerHTML=`<section class="panel home-panel">
-    <h1 class="hero"><span class="a">O</span><span class="b">u</span><span class="c">r</span> <span class="d">T</span><span class="e">o</span><span class="f">w</span><span class="c">n</span><span class="gameword">GAME! 🏡</span></h1>
+    <h1 class="hero"><span class="a">O</span><span class="b">u</span><span class="c">r</span> <span class="d">T</span><span class="e">o</span><span class="f">w</span><span class="c">n</span><span class="gameword">GAME! 🏡</span><span class="title-tl">Ang Ating Komunidad</span></h1>
     <p class="subtitle">Match places, jobs, and situations!</p>
     <div class="levels">
       <button type="button" class="level pink" data-level="1">
@@ -106,6 +117,13 @@ function begin(selected){
     const reverseRound=randomize(directions).slice(0,9).map(pair=>
       makePairQuestion({...pair,forward:!pair.forward}));
     questions=randomize([...firstRound,...reverseRound]);
+    // Show the new CDC picture in one teacher/CDC question, retaining the original in the other.
+    let cdcCount=0;
+    questions.forEach(q=>{
+      if(q.targetId==='child_development_center'||q.correctId==='child_development_center'){
+        q.cdcVariant=(cdcCount++===0);
+      }
+    });
   }else{
     questions=randomize(SCENES.map(([scene,place,prompt])=>({
       targetType:'scenes',targetId:scene,optionType:'places',correctId:place,prompt
@@ -125,10 +143,11 @@ function makeOptions(q){
 }
 function renderQuestion(){
   question=questions[index];solved=false;gesture=null;ghost.hidden=true;stopSpeech();
+  cdcVariant=Boolean(question.cdcVariant);
   const q=question, labels=q.optionType==='jobs'?JOBS:PLACES;
   counter.textContent=`⭐ ${index+1} / ${questions.length}`;
   screen.innerHTML=`<section class="game">
-    <div class="heading"><span class="badge">LEVEL ${level}</span><h2>${q.prompt}</h2>
+    <div class="heading"><span class="badge">LEVEL ${level}</span><h2><span class="question-en">${q.prompt}</span><span class="question-tl">${TAGALOG[q.prompt]||''}</span></h2>
        <button type="button" id="readPrompt" class="read-button" aria-label="Read the question aloud">🔊 Listen</button></div>
     <div class="stage"><div class="dropzone" id="dropzone">
       <img src="${file(q.targetType,q.targetId)}" draggable="false" alt="Question picture">
@@ -192,7 +211,11 @@ function pointerCancel(){clearGesture();}
 function judge(id,btn){
   if(solved)return;
   if(id!==question.correctId){
-    playSound(false);btn.classList.remove('wrong');void btn.offsetWidth;btn.classList.add('wrong');
+    playSound(false);
+    btn.classList.remove('wrong');void btn.offsetWidth;btn.classList.add('wrong');
+    const target=el('dropzone');
+    target.classList.remove('incorrect');void target.offsetWidth;target.classList.add('incorrect');
+    setTimeout(()=>{if(target.isConnected)target.classList.remove('incorrect');},800);
     el('notice').textContent='Try again! 💛';return;
   }
   solved=true;playSound(true);
